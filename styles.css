@@ -1,4 +1,4 @@
-/* Common styles for all devices */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -34,7 +34,10 @@ body {
 
 
 main {
-    padding: 20px;
+ 
+    margin-left:100px ;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .product-listings {
@@ -80,6 +83,7 @@ main {
     .product {
         width: 100%;
     }
+
 }
 .cart {
     background-color: #f1f1f1;
