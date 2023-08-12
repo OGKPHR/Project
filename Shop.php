@@ -62,6 +62,6 @@
         <p>&copy; 2023 Lucky Phone Number Shop. All rights reserved.</p>
     </footer>
 
-    <script src="Shop.js"></script>
+    <script src="shop.js"></script>
 </body>
 </html>

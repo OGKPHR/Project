@@ -55,29 +55,33 @@
         <h3>Admin: <?php echo $_SESSION['fname']; ?></h3>
         <a href="logout.php">ออกจากระบบ</a>
     </div>
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-        <h2>Add Product</h2>
-        <label for="phonenumber">Phone Number</label>
-        <input type="text" name="phonenumber" placeholder="Enter phone number" required>
-        <br>
-        <label for="Provider">Provider</label> <!-- Change to "Provider" -->
-        <input type="text" name="Provider" placeholder="Enter provider" required>
-        <br>
-        <label for="price">Price</label>
-        <input type="text" name="price" placeholder="Enter price" required>
-        <br>
-        <input type="submit" name="submit" value="Add Product">
-    </form>
+   <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+    <h2>เพิ่มสินค้า</h2>
+    <label for="phonenumber">หมายเลขเบอร์โทร</label>
+    <input type="text" name="phonenumber" placeholder="กรอกเบอร์โทร" required>
+    <br>
+    <label for="Provider">ผู้ให้บริการ</label>
+    <select name="Provider" required>
+        <option value="TRUE">TRUE</option>
+        <option value="DTAC">DTAC</option>
+        <option value="AIS">AIS</option>
+    </select>
+    <br>
+    <label for="price">ราคา</label>
+    <input type="text" name="price" placeholder="กรอกราคา" required>
+    <br>
+    <input type="submit" name="submit" value="ยืนยัน">
+</form>
 
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-        <h2>Manage Products</h2>
+        <h2>ลบสินค้า</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Select</th>
-                    <th>Phone Number</th>
-                    <th>Provider</th>
-                    <th>Price</th>
+                    <th>เลือก</th>
+                    <th>เบอร์</th>
+                    <th>ผู้ให้บริการ</th>
+                    <th>ราคา</th>
                 </tr>
             </thead>
             <tbody>
@@ -91,7 +95,7 @@
                 <?php endwhile; ?>
             </tbody>
         </table>
-        <button type="submit" name="delete">Delete Selected Products</button>
+        <button type="submit" name="delete">ลบสินค้าที่เลือก</button>
     </form>
 </body>
 </html>

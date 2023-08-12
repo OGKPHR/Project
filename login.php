@@ -31,13 +31,12 @@
                 header("Location: Shop.php");
             }
         } else {
-            echo "<script>alert('User หรือ Password ไม่ถูกต้อง') </script>";
+            echo "<script>alert('User หรือ Password ไม่ถูกต้อง'); window.location.href = 'index.php'; </script>";
            
         }
 
     } else {
         header("Location: index.php");
     }
-
-
+    
 ?>
