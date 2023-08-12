@@ -20,17 +20,19 @@
 
             $_SESSION['userid'] = $row['id'];
             $_SESSION['user'] = $row['firstname'] . " " . $row['lastname'];
+            $_SESSION['fname'] = $row['firstname'];
             $_SESSION['userlevel'] = $row['userlevel'];
-
+            
             if ($_SESSION['userlevel'] == 'a') {
-                header("Location: admin_page.php");
+                header("Location: Addproduct.php");
             }
 
             if ($_SESSION['userlevel'] == 'm') {
-                header("Location: user_page.php");
+                header("Location: Shop.php");
             }
         } else {
-            echo "<script>alert('User หรือ Password ไม่ถูกต้อง);</script>";
+            echo "<script>alert('User หรือ Password ไม่ถูกต้อง') </script>";
+           
         }
 
     } else {

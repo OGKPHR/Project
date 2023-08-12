@@ -25,7 +25,7 @@
             $result = mysqli_query($conn, $query);
 
             if ($result) {
-                $_SESSION['success'] = "Insert user successfully";
+             // $_SESSION['success'] = "Insert user successfully";
                 header("Location: index.php");
             } else {
                 $_SESSION['error'] = "Something went wrong";
@@ -46,7 +46,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Register Page</title>
-
+    <link rel="icon" href="unnamed.png">
     <link rel="stylesheet" href="register.css">
 
 </head>
@@ -54,20 +54,20 @@
 
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
     
-        <label for="username">Username</label>
-        <input type="text" name="username" placeholder="Enter your username" required>
+        <label for="username">ชื่อผู้ใช้</label>
+        <input type="text" name="username" placeholder="กรุณากรอกชื่อผู้ใช้" required>
         <br>
-        <label for="password">Password</label>
-        <input type="password" name="password" placeholder="Enter your password" required>
+        <label for="password">รหัสผ่าน</label>
+        <input type="password" name="password" placeholder="กรุณากรอกรหัสผ่าน" required>
         <br>
-        <label for="firstname">Firstname</label>
-        <input type="text" name="firstname" placeholder="Enter your firstname" required>
+        <label for="firstname">ชื่อ</label>
+        <input type="text" name="firstname" placeholder="กรุณากรอกชื่อ" required>
         <br>
-        <label for="lastname">Lastname</label>
-        <input type="text" name="lastname" placeholder="Enter your lastname" required>
+        <label for="lastname">นามสกุล</label>
+        <input type="text" name="lastname" placeholder="กรุณากรอกนามสกุล" required>
         <br>
-        <input type="submit" name="submit" value="Submit">
-        <a href="indexPage.php">Go back to Login</a>
+        <input type="submit" name="submit" value="ยืนยัน">
+        <a href="index.php">ไปยังหน้าเข้าสู่ระบบ</a>
     </form>
 
     
