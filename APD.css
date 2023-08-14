@@ -1,3 +1,5 @@
+/* style.css */
+
 body {
     background-image: url('19505857.jpg');
     background-size: cover;
@@ -11,15 +13,37 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    flex-direction: column;
 }
 
+/* User info box */
+.user {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    text-align: center;
+    background-color: rgba(137, 202, 39, 0.534);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.user a {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #dc3545;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Form for adding products */
 form {
-    display: flex;
-    flex-direction: column;
+    width: 80%;
+    max-width: 400px;
     background-color: rgba(0, 0, 0, 0.5);
     margin: auto;
     border-radius: 10px;
     padding: 10px;
+    margin-bottom: 20px;
 }
 
 label {
@@ -48,10 +72,12 @@ input[type="submit"] {
     font-size: 16px;
 }
 
+/* Table for displaying products */
 table {
-    width: 100%;
+    width: 80%;
+    max-width: 600px;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin: 20px auto;
     border: 1px solid #333;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
@@ -74,20 +100,52 @@ button[type="submit"] {
     font-size: 16px;
 }
 
-.user {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    text-align: center;
-    background-color: rgba(137, 202, 39, 0.534);
+/* Section title style */
+.section-title {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+/* Search form for user search */
+.search-form {
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-width: 400px;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+/* Total users amount display */
+.usamount {
+    background-color: rgba(241, 60, 60, 0.5);
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+    padding: 5px;
+    text-align: center;
     border-radius: 10px;
 }
-.user a{
-    color:  #ffffff;
-    text-decoration: none;
-    background-color: #dc3545;
+.usamount {
+    background-color: rgba(241, 60, 60, 0.5);
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
     padding: 5px;
-    border-radius: 5px;
-    
+    text-align: center;
+    border-radius: 10px;
 }
+.red {
+    background-color: rgba(241, 60, 60, 0.5);
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+    padding: 5px;
+    text-align: center;
+    border-radius: 10px;
+}
+/* Rest of your CSS styles... */
