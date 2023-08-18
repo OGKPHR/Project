@@ -1,25 +1,15 @@
-<?php
-session_start();
-require_once "connection.php";
+<?php 
+    session_start();
+    require_once "connection.php";
 
-// Fetch provider options from the 'providers' table
-$providerOptionsQuery = "SELECT * FROM providers";
-$providerOptionsResult = mysqli_query($conn, $providerOptionsQuery);
-$providerOptions = mysqli_fetch_all($providerOptionsResult, MYSQLI_ASSOC);
-
-// Fetch type options from the 'types' table
-$typeOptionsQuery = "SELECT * FROM TYPES";
-$typeOptionsResult = mysqli_query($conn, $typeOptionsQuery);
-$typeOptions = mysqli_fetch_all($typeOptionsResult, MYSQLI_ASSOC);
-// Handle product addition
-if (isset($_POST['submit'])) {
+   // Handle product addition
+   if (isset($_POST['submit'])) {
     $phonenumber = $_POST['phonenumber'];
     $provider = $_POST['Provider'];
     $price = $_POST['price'];
-    $Type=$_POST['TYPES'];
-
-    $query = "INSERT INTO product (phonenumber, Provider, Price,TYPES)
-            VALUES ('$phonenumber', '$provider', '$price', '$Type')";
+    
+    $query = "INSERT INTO product (phonenumber, Provider, Price)
+            VALUES ('$phonenumber', '$provider', '$price')";
     $result = mysqli_query($conn, $query);
 
     if ($result) {
@@ -29,56 +19,39 @@ if (isset($_POST['submit'])) {
     }
 }
 
-// Handle product deletion
-if (isset($_POST['delete'])) {
-    if (!empty($_POST['selected_products'])) {
-        $selectedProducts = $_POST['selected_products'];
-        $ids = implode(',', $selectedProducts);
-        $deleteQuery = "DELETE FROM product WHERE id IN ($ids)";
-        $deleteResult = mysqli_query($conn, $deleteQuery);
-
-        if ($deleteResult) {
-            echo "Selected products deleted successfully!";
-        } else {
-            echo "Error deleting products: " . mysqli_error($conn);
+    // Handle product deletion
+    if (isset($_POST['delete'])) {
+        if (!empty($_POST['selected_products'])) {
+            $selectedProducts = $_POST['selected_products'];
+            $ids = implode(',', $selectedProducts);
+            $deleteQuery = "DELETE FROM product WHERE id IN ($ids)";
+            $deleteResult = mysqli_query($conn, $deleteQuery);
+            
+            if ($deleteResult) {
+                echo "Selected products deleted successfully!";
+            } else {
+                echo "Error deleting products: " . mysqli_error($conn);
+            }
         }
+           
     }
 
-}
-if (isset($_POST['delete2'])) {
-    if (!empty($_POST['selected_products'])) {
-        $selectedProducts = $_POST['selected_products'];
-        $ids = implode(',', $selectedProducts);
-        $deleteQuery = "DELETE FROM product WHERE id IN ($ids)";
-        $deleteResult = mysqli_query($conn, $deleteQuery);
+    // Fetch products from the database
+    $query = "SELECT * FROM product";
+    $result = mysqli_query($conn, $query);
 
-        if ($deleteResult) {
-            echo "Selected products deleted successfully!";
-        } else {
-            echo "Error deleting products: " . mysqli_error($conn);
-        }
+    // Count total users in the database
+    $countQuery = "SELECT COUNT(id) AS total_users FROM user";
+    $countResult = mysqli_query($conn, $countQuery);
+    $totalUsers = mysqli_fetch_assoc($countResult)['total_users'];
+
+    // Search for users by name or ID
+    if (isset($_POST['search'])) {
+        $searchTerm = $_POST['search_term'];
+        $searchQuery = "SELECT * FROM user WHERE id = '$searchTerm' OR username = '$searchTerm' OR CONCAT(firstname, ' ', lastname) LIKE '%$searchTerm%'";
+        $searchResult = mysqli_query($conn, $searchQuery);
     }
-
-}
-
-// Fetch products from the database
-$query = "SELECT * FROM product";
-$result = mysqli_query($conn, $query);
-
-// Count total users in the database
-$countQuery = "SELECT COUNT(id) AS total_users FROM user";
-$countResult = mysqli_query($conn, $countQuery);
-$totalUsers = mysqli_fetch_assoc($countResult)['total_users'];
-
-// Search for users by name or ID
-if (isset($_POST['search'])) {
-    $searchTerm = $_POST['search_term'];
-    $searchQuery = "SELECT * FROM user WHERE id = '$searchTerm' OR username = '$searchTerm' OR CONCAT(firstname, ' ', lastname) LIKE '%$searchTerm%'";
-    $searchResult = mysqli_query($conn, $searchQuery);
-}
-
-
-// Handle user deletion
+    // Handle user deletion
 if (isset($_POST['delete_users'])) {
     if (!empty($_POST['selected_users'])) {
         $selectedUsers = $_POST['selected_users'];
@@ -112,20 +85,7 @@ if (isset($_POST['delete_users'])) {
     }
 }
 
-if (isset($_POST['searchnumber'])) {
-    // Get the search term from the form
-    $searchTerm = $_POST['search_term'];
-
-    // Construct the search query
-    $searchQuery = "SELECT * FROM product WHERE phonenumber LIKE '%$searchTerm%' OR Price LIKE '%$searchTerm%'";
-
-    // Execute the query and fetch the results
-    $searchResult = mysqli_query($conn, $searchQuery);
-}
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -136,9 +96,9 @@ if (isset($_POST['searchnumber'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-<link rel="icon" href="unnamed.png">
-    <title>Product&Users Management</title>
-   
+
+    <title>SB Admin 2 - Dashboard</title>
+
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -161,9 +121,9 @@ if (isset($_POST['searchnumber'])) {
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-wrench"></i>
+                    <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">ADMINISTRATION</div>
+                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
             </a>
 
             <!-- Divider -->
@@ -270,14 +230,12 @@ if (isset($_POST['searchnumber'])) {
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
-            <!-- Sidebar Message 
+            <!-- Sidebar Message -->
             <div class="sidebar-card d-none d-lg-flex">
                 <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
-                <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components,
-                    and more!</p>
-                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to
-                    Pro!</a>
-            </div>-->
+                <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
+                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
+            </div>
 
         </ul>
         <!-- End of Sidebar -->
@@ -404,7 +362,8 @@ if (isset($_POST['searchnumber'])) {
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg" alt="...">
+                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                            alt="...">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
                                     <div class="font-weight-bold">
@@ -415,7 +374,8 @@ if (isset($_POST['searchnumber'])) {
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg" alt="...">
+                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                            alt="...">
                                         <div class="status-indicator"></div>
                                     </div>
                                     <div>
@@ -426,7 +386,8 @@ if (isset($_POST['searchnumber'])) {
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg" alt="...">
+                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
+                                            alt="...">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
                                     <div>
@@ -457,8 +418,9 @@ if (isset($_POST['searchnumber'])) {
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['fname']; ?></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <img class="img-profile rounded-circle"
+                                    src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -493,7 +455,7 @@ if (isset($_POST['searchnumber'])) {
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">User and Product</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
@@ -508,293 +470,105 @@ if (isset($_POST['searchnumber'])) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                <h2 style="font-weight: bold;">เพิ่มสินค้า</h2>
-                                            </div>
+                                                <h2 style="font-weight: bold;" >เพิ่มสินค้า</h2></div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                                                    <label for="phonenumber">หมายเลขเบอร์โทร</label>
-                                                    <input type="text" class="form-control bg-light border-0 small"
-                                                        name="phonenumber" placeholder="กรอกเบอร์โทร" required>
-                                                    <br>
-                                                    <label for="Provider">ผู้ให้บริการ</label>
-                                                    <select class="custom-select custom-select-sm form-control form-control-sm" id="Provider" name="Provider" required>
-                                                        <?php foreach ($providerOptions as $providerOption): ?>
-                                                            <option value="<?php echo $providerOption['option_value']; ?>"><?php echo $providerOption['option_value']; ?></option>
-                                                        <?php endforeach; ?>
-                                                    </select>
-                                                    <a href="#" class="fa fa-plus-circle" data-toggle="modal" data-target="#addProviderModal"></a>
-
-                                                    <a href="#" class="fa fa-minus-circle" onclick="deleteSelectedOption('providers')"></a>
-
-
-                                                      <br>
-                                                    <label for="TYPES">ประเภท  </label>
-                                                    <select class="custom-select custom-select-sm form-control form-control-sm" id="TYPES" name="TYPES" required>
-                                                        <?php foreach ($typeOptions as $typeOption): ?>
-                                                            <option value="<?php echo $typeOption['option_value']; ?>"><?php echo $typeOption['option_value']; ?></option>
-                                                        <?php endforeach; ?>
-                                                    </select>
-                                                    <br>
-                                                    <a href="#" class="fa fa-plus-circle" data-toggle="modal" data-target="#addTypeModal"></a>
-
-                                                    <a href="#" class="fa fa-minus-circle" onclick="deleteSelectedOptionT('types')"></a>
-
-                                                    <br>
-                                                    <label for="price">ราคา</label>
-                                                    <input type="text" class="form-control bg-light border-0 small" name="price" placeholder="กรอกราคา" required>
-                                                    <button class="btn btn-success mt-2" type="submit" name="submit">ยืนยัน</button>
-                                                </form>
-                                            </div>
-
+                                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                                            <label for="phonenumber">หมายเลขเบอร์โทร</label>
+                                            <input type="text" class="form-control bg-light border-0 small" name="phonenumber" placeholder="กรอกเบอร์โทร" required>
+                                            <br>
+                                            <label for="Provider">ผู้ให้บริการ</label>
+                                            <select  class="custom-select custom-select-sm form-control form-control-sm" id="Provider" name="Provider" required>
+                                                <option value="TRUE">TRUE</option>
+                                                <option value="DTAC">DTAC</option>
+                                                <option value="AIS">AIS</option>
+                                            </select>
+                                            <br>
+                                            <a style="padding-top: 5px;" href="#" class ="fa fa-plus-circle" onclick="addOption()">เพิ่ม</a>
+                                            <a style="padding-top: 5px;" href="#" class ="fa fa-minus-circle"  onclick="deleteOption()">ลบ</a>
+                                            <br>
+                                            <label for="price">ราคา</label>
+                                            <input type="text" class="form-control bg-light border-0 small" name="price" placeholder="กรอกราคา" required>
+                                            <!--<a href="#" class="btn btn-success btn-block" onclick="document.forms[0].submit();">ยืนยัน</a>-->
+                                            <br>
+                                             <input class="btn-success" type="submit" name="submit" value="ยืนยัน">
+                                        </form></div>
+                                        
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-donate fa-2x text-gray-300"></i>
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade" id="addProviderModal" tabindex="-1" role="dialog" aria-labelledby="addProviderModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addProviderModalLabel">Add Provider Option</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <label for="newProviderOption">New Option:</label>
-                    <input type="text" class="form-control" id="newProviderOption" name="newProviderOption" required>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="addNewOption('newProviderOption', 'providers', 'providers')">Add Option</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-                        <div class="modal fade" id="addTypeModal" tabindex="-1" role="dialog" aria-labelledby="addTypeModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addTypeModalLabel">Add Type Option</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <label for="newTypeOption">New Option:</label>
-                    <input type="text" class="form-control" id="newTypeOption" name="newTypeOption" required>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="addNewOption('newTypeOption', 'types')">Add Option</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-                        <div style="min-width: fit-content;" class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-warning shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                        <h2>ลบสินค้า</h2>
-                    </div>
-                
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                    <!-- Display search form -->
-                                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                                    <label for="search_term">ค้นหาด้วยหมายเลขโทรศัพท์หรือราคา</label>
-                                    <input type="text" class="form-control bg-light border-0 small" name="search_term" placeholder="ค้นหาเบอร์หรือราคา" required>
-                                    <button class="btn btn-success mt-2" type="submit" name="searchnumber">ค้นหา</button>
-                                </form>
-
-                               
-
-                          
-
-                            
-                             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                            <div class="table-responsive">
-                                 <!-- Display search results -->
-                                 <?php if (isset($searchResult)) : ?>
-                                    <?php if (mysqli_num_rows($searchResult) > 0) : ?>
-                                        <h2>ผลการค้นหา</h2>
-                                        <table class="table table-bordered dataTable">
-                                            <thead>
-                                            <tr>
-                                                <th>เลือก</th>
-                                                <th>เบอร์</th>
-                                                <th>ผู้ให้บริการ</th>
-                                                <th>ราคา</th>
-                                                <th>เสริมด้าน</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php while ($row = mysqli_fetch_assoc($searchResult)) : ?>
-                                                    <tr>
-                                                    <td><input type="checkbox" name="selected_products[]" value="<?php echo $row['id']; ?>">
-                                                            </td>
-                                                    <td><?php echo $row['phonenumber']; ?></td>
-                                                    <td><?php echo $row['Provider']; ?></td>
-                                                    <td><?php echo $row['Price']; ?></td>
-                                                    <td><?php echo $row['TYPES']; ?></td>
-                                                </tr>
-                                                <?php endwhile; ?>
-                                            </tbody>
-                                        </table>
-                                        <button class="btn btn-danger mt-2" type="submit" name="delete2">
-                                            ลบสินค้าที่เลือก
-                                        </button>
-                                    <?php else : ?>
-                                        <p>ไม่พบผลการค้นหา</p>
-                                    <?php endif; ?>
-                                <?php endif; ?>
-                                <table class="table table-bordered dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>เลือก</th>
-                                            <th>เบอร์</th>
-                                            <th>ผู้ให้บริการ</th>
-                                            <th>ราคา</th>
-                                            <th>เสริมด้าน</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                                            <tr>
-                                                <td><input type="checkbox" name="selected_products[]"
-                                                        value="<?php echo $row['id']; ?>"></td>
-                                                <td><?php echo $row['phonenumber']; ?></td>
-                                                <td><?php echo $row['Provider']; ?></td>
-                                                <td><?php echo $row['Price']; ?></td>
-                                                <td><?php echo $row['TYPES']; ?></td>
-                                            </tr>
-                                        <?php endwhile; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button class="btn btn-danger mt-2" type="submit" name="delete">
-                                ลบสินค้าที่เลือก
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-table fa-2x text-gray-300"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                        
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4" style="min-width: fit-content;">
-                        <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                <h2 style="font-weight: bold;">ค้นหาผู้ใช้</h2>
-                                            </div>
+                                                <h2 style="font-weight: bold;" >ลบสินค้า</h2></div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <!-- Search users by name or ID -->
-                                                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                                                    <h3>
-                                                        
-                                                        <div class="usamount">จำนวนผู้ใช้ในระบบ:
-                                                            <?php echo $totalUsers; ?>
-                                                        </div>
-                                                    </h3>
+                                                 <!-- Search users by name or ID -->
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+        <p><h2>ค้นหาผู้ใช้</h2><h2><div class="usamount">จำนวนผู้ใช้ในระบบ: <?php echo $totalUsers; ?></div></h2></p>
 
-                                                    <label for="search_term">ค้นหาด้วยชื่อหรือรหัสผู้ใช้</label>
-                                                    
-                                                     <input type="text" class="form-control bg-light border-0 small" name="search_term" placeholder="กรอกชื่อหรือรหัสผู้ใช้" required>
-                                                    <button class="btn btn-success mt-2" type="submit" name="search">ค้นหา</button>
+        <label for="search_term">ค้นหาด้วยชื่อหรือรหัสผู้ใช้</label>
+        <input type="text" name="search_term" placeholder="กรอกชื่อหรือรหัสผู้ใช้" required>
+        <button type="submit" name="search">ค้นหา</button>
+    </form>
 
-                                                </form>
-                                               
+    <!-- Display searched users -->
+    <?php if (isset($_POST['search'])) : ?>
+       
+        <?php if (mysqli_num_rows($searchResult) > 0) : ?>
+         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+         <h2>ผลการค้นหาผู้ใช้</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>เลือก</th>
+                        <th>ID</th>
+                        <th>ชื่อ</th>
+                        <th>นามสกุล</th>
+                        <th>สถานะ</th>
+                        <!-- Add more columns if needed... -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = mysqli_fetch_assoc($searchResult)) : ?>
+                        <tr>
+                            <td><input type="checkbox" name="selected_users[]" value="<?php echo $row['id']; ?>"></td>
+                            <td><?php echo $row['id']; ?></td>
+                            <td><?php echo $row['firstname']; ?></td>
+                            <td><?php echo $row['lastname']; ?></td>
+                            <td><?php echo ($row['userlevel'] == 'a') ? 'ADMIN' : (($row['userlevel'] == 'm') ? 'USER' : ''); ?></td>
 
-                                                <!-- Display searched users -->
-                                                <?php if (isset($_POST['search'])): ?>
-
-                                                    <?php if (mysqli_num_rows($searchResult) > 0): ?>
-                                                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                                                            <h2>ผลการค้นหาผู้ใช้</h2>
-                                                            <table class="table table-bordered dataTable">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>เลือก</th>
-                                                                        <th>ID</th>
-                                                                        <th>ชื่อ</th>
-                                                                        <th>นามสกุล</th>
-                                                                        <th>สถานะ</th>
-                                                                        <th>ชื่อผู้ใช้</th>
-                                                                        
-                                                                        <!-- Add more columns if needed... -->
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <?php while ($row = mysqli_fetch_assoc($searchResult)): ?>
-                                                                        <tr>
-                                                                            <td><input type="checkbox" name="selected_users[]"
-                                                                                    value="<?php echo $row['id']; ?>"></td>
-                                                                            <td>
-                                                                                <?php echo $row['id']; ?>
-                                                                            </td>
-                                                                            <td>
-                                                                                <?php echo $row['firstname']; ?>
-                                                                            </td>
-                                                                            <td>
-                                                                                <?php echo $row['lastname']; ?>
-                                                                            </td>
-                                                                            <td>
-                                                                                <?php echo ($row['userlevel'] == 'a') ? 'ADMIN' : (($row['userlevel'] == 'm') ? 'USER' : ''); ?>
-                                                                            </td>
-                                                                            <td>
-                                                                                <?php echo $row['username']; ?>
-                                                                            </td>
-                                                                            
-
-                                                                            <!-- Add more columns if needed... -->
-                                                                        </tr>
-                                                                    <?php endwhile; ?>
-                                                                </tbody>
-                                                            </table>
-                                                            <button class="btn btn-danger  mt-2" type="submit" name="delete_users">
-                                                                ลบผู้ใช้ที่เลือก
-                                                            </button>
-                                                            
-
-                                                        </form>
-                                                        
-                                                    <?php else: ?>
-                                                        <div class="red">ไม่พบผู้ใช้ที่ค้นหา</div>
-                                                    <?php endif; ?>
-                                                <?php endif; ?>
+                            <!-- Add more columns if needed... -->
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+            <button type="submit" name="delete_users">ลบผู้ใช้ที่เลือก</button>
+        </form>
+        <?php else : ?>
+           <div class="red">ไม่พบผู้ใช้ที่ค้นหา</div> 
+        <?php endif; ?>
+    <?php endif; ?>
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                        <div class="col-auto">
-                                                <i class="fas fa-search fa-2x text-gray-300"></i>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Earnings (Monthly) Card Example 
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4" >
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -809,9 +583,9 @@ if (isset($_POST['searchnumber'])) {
                                     </div>
                                 </div>
                             </div>
-                        </div>-->
+                        </div>
 
-                        <!-- Earnings (Monthly) Card Example 
+                        <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
@@ -838,11 +612,50 @@ if (isset($_POST['searchnumber'])) {
                                     </div>
                                 </div>
                             </div>
-                        </div>-->
+                        </div>
 
                         <!-- Pending Requests Card Example -->
-               
-
+                        <div style="min-width: fit-content;" class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                <h2>ลบสินค้า</h2></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                                                   <table class="table table-bordered dataTable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>เลือก</th>
+                                                                <th>เบอร์</th>
+                                                                <th>ผู้ให้บริการ</th>
+                                                                <th>ราคา</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php while ($row = mysqli_fetch_assoc($result)) : ?>
+                                                                <tr>
+                                                                    <td><input type="checkbox" name="selected_products[]" value="<?php echo $row['id']; ?>"></td>
+                                                                    <td><?php echo $row['phonenumber']; ?></td>
+                                                                    <td><?php echo $row['Provider']; ?></td>
+                                                                    <td><?php echo $row['Price']; ?></td>
+                                                                </tr>
+                                                            <?php endwhile; ?>
+                                                        </tbody>
+                                                    </table>
+                                                    <button class="btn-success" type="submit" name="delete">ลบสินค้าที่เลือก</button>
+                                                  
+                                                </form></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Content Row -->
 
@@ -1116,14 +929,14 @@ if (isset($_POST['searchnumber'])) {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
                 </div>
             </div>
         </div>
     </div>
-    <script src="aaw.js"></script>
-   <!-- Bootstrap core JavaScript-->
-   <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="addproduct.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
