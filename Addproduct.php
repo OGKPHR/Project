@@ -120,7 +120,32 @@ if (isset($_POST['searchnumber'])) {
     $searchQuery = "SELECT * FROM product WHERE phonenumber LIKE '%$searchTerm%' OR Price LIKE '%$searchTerm%'";
 
     // Execute the query and fetch the results
-    $searchResult = mysqli_query($conn, $searchQuery);
+    $searchnumResult = mysqli_query($conn, $searchQuery);
+}
+?>
+
+<?php
+// Set the timezone to GMT+7
+date_default_timezone_set('Asia/Bangkok');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
+    $uploadDir = 'fileupload/';
+    
+    $uploadedFileTmp = $_FILES['uploaded_picture']['tmp_name'];
+
+    // Generate a new name for the uploaded picture based on current date and time
+    $currentDateTime = date('dmY-His'); // Format: ddmmyy-hhmmss
+    $newFileName = $currentDateTime ;
+
+    if (move_uploaded_file($uploadedFileTmp, $uploadDir . $newFileName)) {
+        $query = "INSERT INTO uploadfile (fileupload) VALUES ('$newFileName')";
+        
+        if ($conn->query($query) === TRUE) {
+            echo "Picture uploaded successfully!";
+        } else {
+            echo "Error uploading picture: " . $conn->error;
+        }
+    }
 }
 ?>
 
@@ -159,7 +184,7 @@ if (isset($_POST['searchnumber'])) {
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-wrench"></i>
                 </div>
@@ -171,9 +196,14 @@ if (isset($_POST['searchnumber'])) {
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="Addproduct.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Product-Management</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="Addproduct.php">
+                    <i class="fas-phone"></i>
+                    <span>PhonenumberList</span></a>
             </li>
 
             <!-- Divider -->
@@ -189,7 +219,7 @@ if (isset($_POST['searchnumber'])) {
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                    <span>PhonenumberList</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
@@ -500,7 +530,73 @@ if (isset($_POST['searchnumber'])) {
 
                     <!-- Content Row -->
                     <div class="row">
+    <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                               <h2 style="font-weight: bold;">แก้ใขBanner</h2></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">   <div class="row">
+        <div class="col-md-12">
+            <form action="delete_selected.php" method="POST">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Picture</th>
+                            <th>Select</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        require_once "connection.php";
 
+                        $query = "SELECT * FROM uploadfile";
+                        $result = $conn->query($query);
+
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<tr>';
+                            echo '<td><img src="fileupload/' . $row['fileupload'] . '?' . time() . '" class="img-thumbnail"></td>';
+                            echo '<td><input type="checkbox" name="selected_files[]" value="' . $row['fileupload'] . '"></td>';
+                            echo '</tr>';
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-danger" onclick="return confirmDelete()">Delete Selected</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form action="Addproduct.php" method="POST" enctype="multipart/form-data">
+                <input type="file" name="uploaded_picture">
+                <button type="submit" name="upload_btn" class="btn btn-primary">Upload Picture</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Include your scripts and other content here -->
+    <script>
+    function confirmDelete() {
+        var selectedCheckboxes = document.querySelectorAll('input[name="selected_files[]"]:checked');
+        if (selectedCheckboxes.length === 0) {
+            alert("Please select at least one picture to delete.");
+            return false;
+        }
+        return confirm("Are you sure you want to delete the selected pictures?");
+    }
+    </script></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
@@ -627,8 +723,8 @@ if (isset($_POST['searchnumber'])) {
                              <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                             <div class="table-responsive">
                                  <!-- Display search results -->
-                                 <?php if (isset($searchResult)) : ?>
-                                    <?php if (mysqli_num_rows($searchResult) > 0) : ?>
+                                 <?php if (isset($searchnumResult)) : ?>
+                                    <?php if (mysqli_num_rows($searchnumResult) > 0) : ?>
                                         <h2>ผลการค้นหา</h2>
                                         <table class="table table-bordered dataTable">
                                             <thead>
@@ -641,7 +737,7 @@ if (isset($_POST['searchnumber'])) {
                                             </tr>
                                             </thead>
                                             <tbody>
-                                                <?php while ($row = mysqli_fetch_assoc($searchResult)) : ?>
+                                                <?php while ($row = mysqli_fetch_assoc($searchnumResult)) : ?>
                                                     <tr>
                                                     <td><input type="checkbox" name="selected_products[]" value="<?php echo $row['id']; ?>">
                                                             </td>
@@ -660,33 +756,9 @@ if (isset($_POST['searchnumber'])) {
                                         <p>ไม่พบผลการค้นหา</p>
                                     <?php endif; ?>
                                 <?php endif; ?>
-                                <table class="table table-bordered dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>เลือก</th>
-                                            <th>เบอร์</th>
-                                            <th>ผู้ให้บริการ</th>
-                                            <th>ราคา</th>
-                                            <th>เสริมด้าน</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                                            <tr>
-                                                <td><input type="checkbox" name="selected_products[]"
-                                                        value="<?php echo $row['id']; ?>"></td>
-                                                <td><?php echo $row['phonenumber']; ?></td>
-                                                <td><?php echo $row['Provider']; ?></td>
-                                                <td><?php echo $row['Price']; ?></td>
-                                                <td><?php echo $row['TYPES']; ?></td>
-                                            </tr>
-                                        <?php endwhile; ?>
-                                    </tbody>
-                                </table>
+                                
                             </div>
-                            <button class="btn btn-danger mt-2" type="submit" name="delete">
-                                ลบสินค้าที่เลือก
-                            </button>
+                           
                         </form>
                     </div>
                 </div>

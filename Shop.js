@@ -8,7 +8,6 @@ const clearCartBtn = document.getElementById('clear-cart-btn');
 function isProductInCart(productName) {
     return cartItems.some(item => item.productName === productName);
 }
-    
 
 // Function to update the cart content and total
 function updateCart() {

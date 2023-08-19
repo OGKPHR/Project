@@ -41,7 +41,7 @@
                 <div class="product">
                     <img src="<?php echo $row['Provider']; ?>.png" alt="Product">
                     <h2><?php echo $row['phonenumber']; ?></h2>
-                    <p>Description of Product.</p>
+                    <p><?php echo $row['TYPES']; ?></p>
                     <span class="price">฿<?php echo $row['Price']; ?> </span>
                     <button>เพิ่มลงตะกร้า</button>
                 </div>
@@ -62,6 +62,6 @@
         <p>&copy; 2023 Lucky Phone Number Shop. All rights reserved.</p>
     </footer>
 
-    <script src="shop.js"></script>
+    <script >src="shop.js"</script>
 </body>
 </html>
