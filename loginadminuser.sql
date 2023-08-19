@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 12, 2023 at 02:09 PM
+-- Generation Time: Aug 19, 2023 at 03:22 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -31,16 +31,31 @@ CREATE TABLE `product` (
   `id` int(5) NOT NULL,
   `phonenumber` varchar(10) NOT NULL,
   `Provider` varchar(5) NOT NULL,
-  `Price` int(7) NOT NULL
+  `Price` int(7) NOT NULL,
+  `TYPES` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `product`
+-- Table structure for table `providers`
 --
 
-INSERT INTO `product` (`id`, `phonenumber`, `Provider`, `Price`) VALUES
-(1, '0887988325', 'TRUE', 19999),
-(2, '0889384121', 'TRUE', 123132);
+CREATE TABLE `providers` (
+  `id` int(11) NOT NULL,
+  `option_value` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_nopad_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `types`
+--
+
+CREATE TABLE `types` (
+  `id` int(11) NOT NULL,
+  `option_value` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -58,14 +73,6 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `username`, `password`, `firstname`, `lastname`, `userlevel`) VALUES
-(1, 'ogk', '202cb962ac59075b964b07152d234b70', 'pacharapol', 'wannachai', 'm'),
-(3, '123', '202cb962ac59075b964b07152d234b70', 'STEVE', 'AWD', 'a');
-
---
 -- Indexes for dumped tables
 --
 
@@ -73,6 +80,18 @@ INSERT INTO `user` (`id`, `username`, `password`, `firstname`, `lastname`, `user
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `providers`
+--
+ALTER TABLE `providers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `types`
+--
+ALTER TABLE `types`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -89,13 +108,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `providers`
+--
+ALTER TABLE `providers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `types`
+--
+ALTER TABLE `types`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
