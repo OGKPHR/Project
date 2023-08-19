@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 19, 2023 at 03:22 AM
+-- Generation Time: Aug 19, 2023 at 08:47 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -60,6 +60,18 @@ CREATE TABLE `types` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `uploadfile`
+--
+
+CREATE TABLE `uploadfile` (
+  `fileID` int(5) NOT NULL,
+  `fileupload` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `dateup` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -95,6 +107,12 @@ ALTER TABLE `types`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `uploadfile`
+--
+ALTER TABLE `uploadfile`
+  ADD PRIMARY KEY (`fileID`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -121,6 +139,12 @@ ALTER TABLE `providers`
 --
 ALTER TABLE `types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `uploadfile`
+--
+ALTER TABLE `uploadfile`
+  MODIFY `fileID` int(5) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
