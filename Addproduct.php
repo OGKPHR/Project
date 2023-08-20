@@ -24,6 +24,9 @@ if (isset($_POST['submit'])) {
 
     if ($result) {
         echo "Data inserted successfully!";
+        
+        header("Location: Addproduct.php");
+        exit;
     } else {
         echo "Error: " . mysqli_error($conn);
     }
@@ -42,7 +45,9 @@ if (isset($_POST['delete'])) {
         } else {
             echo "Error deleting products: " . mysqli_error($conn);
         }
-    }
+    }mysqli_close($conn);
+    header("Location: Addprodu.php");
+    exit;
 
 }
 if (isset($_POST['delete2'])) {
@@ -57,7 +62,9 @@ if (isset($_POST['delete2'])) {
         } else {
             echo "Error deleting products: " . mysqli_error($conn);
         }
-    }
+    }mysqli_close($conn);
+    header("Location: Addprodu.php");
+    exit;
 
 }
 
@@ -132,10 +139,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
     $uploadDir = 'fileupload/';
     
     $uploadedFileTmp = $_FILES['uploaded_picture']['tmp_name'];
+    $originalFileName = $_FILES['uploaded_picture']['name']; // Get the original filename
+
+    // Get the file extension
+    $fileExtension = pathinfo($originalFileName, PATHINFO_EXTENSION);
 
     // Generate a new name for the uploaded picture based on current date and time
     $currentDateTime = date('dmY-His'); // Format: ddmmyy-hhmmss
-    $newFileName = $currentDateTime ;
+    $newFileName = $currentDateTime . '_' . $originalFileName; // Combine date-time and original filename
 
     if (move_uploaded_file($uploadedFileTmp, $uploadDir . $newFileName)) {
         $query = "INSERT INTO uploadfile (fileupload) VALUES ('$newFileName')";
@@ -145,8 +156,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
         } else {
             echo "Error uploading picture: " . $conn->error;
         }
-    }
+    }mysqli_close($conn);
+    header("Location: Addproduct.php");
+    exit;
 }
+
 ?>
 
 
@@ -591,7 +605,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
     </script></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                            <i class="fas fa-"></i>
                                         </div>
                                     </div>
                                 </div>
