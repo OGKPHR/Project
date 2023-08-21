@@ -1,55 +1,97 @@
+body {
+    padding-top: 0px;
+    /* Adjust the value to match your navbar height */
+}
+
+
+.header {
+    background-color: #f1f1f1;
+    padding: 0;
+    text-align: center;
+}
+
+#navbar {
+    overflow: hidden;
+    background-color:rgb(255, 255, 255);
+    display: flex;
+}
+
+#navbar a {
+    float: left;
+    display: block;
+    color: red;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+#navbar a:hover {
+    background-color: #ffffff;
+    color: black;
+}
+
+#navbar a.active {
+    background-color: #04AA6D;
+    color: red;
+}
+
+.content {
+    padding: 0px;
+    
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.sticky+.content {
+    padding-top: 60px;
+}
+
+.content .banner {
+    max-height: 500px;
+    overflow: hidden;
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+
+}
+
+.carousel-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+#carouselExample{
+    padding: 0%;
+    margin: 0%;
+}
+#navbar {
+    z-index: 1000;
+    height: 200px;
+    box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.297);
+}
 
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-.sticky-header .user h{
-   text-align: right;
-    color: #fff;
-    background-color: antiquewhite;
-    margin: auto;
-}
-.sticky-header .user a{
-   text-align: right;
-    color: #fff;
-    text-decoration: none;
-     padding: 10px;
-     border-radius: 5px;
-    background-color: red;
-    font-weight: bold;
+    padding-top: 60px;
+    /* Adjust the value to match your navbar height */
 }
 
-.sticky-header {
-    background-color: rgb(53, 52, 52);
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-    z-index: 100;
+.carousel {
+    margin-top: 60px;
+    /* Adjust the value to match your navbar height */
 }
 
-.sticky-header nav ul {
-    list-style-type: none;
-    padding: 0;
-}
+.content main {
 
-.sticky-header nav li {
-    display: inline-block;
-    margin-right: 20px;
-}
-
-.sticky-header nav li a {
-    color: #fff;
-    text-decoration: none;
-}
-
-
-main {
- 
-    margin-left:100px ;
+    margin-left: 100px;
     display: flex;
     flex-wrap: wrap;
 }
@@ -85,10 +127,7 @@ main {
 
 /* รีสปอนซีบ สำหรับอุปกรณ์อื่นๆ */
 @media screen and (max-width: 768px) {
-    .sticky-header {
-        padding: 10px;
-    }
-
+   
     .sticky-header nav li {
         display: block;
         margin: 5px 0;
@@ -99,6 +138,7 @@ main {
     }
 
 }
+
 .cart {
     background-color: #f1f1f1;
     padding: 20px;
@@ -120,10 +160,15 @@ main {
 .cart button {
     margin-top: 10px;
 }
+
 footer {
     background-color: rgb(53, 52, 52);
     color: #fff;
     text-align: center;
     padding: 10px;
-    margin-top: auto; /* Push the footer to the bottom */
+    margin-top: auto;
+    /* Push the footer to the bottom */
+}
+.barbox{
+    height: 200px;
 }
