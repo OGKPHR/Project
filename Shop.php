@@ -35,33 +35,24 @@ $typeOptions = mysqli_fetch_all($typeOptionsResult, MYSQLI_ASSOC);
 
 
     <div id="navbar" >
-        <div class="oneline"style="width: 100%;height: 100px ;margin: 50px; display:flex; ">
-            <img style="width: 300px;height: 100px ;" src="ICON\LOGO.png" href="Shop.php">
-              <!-- Nav Item - User Information -->
+    <img style="width: 300px;height: 100px ;margin-top: 50px;" src="ICON\LOGO.png" href="Shop.php">
+       
+          
+    <div class="user-info">
+    <ul class="navbar-nav ml-auto">
               
                         <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
+                        <li class="nav-item dropdown no-arrow" style="align-content: right;">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['fname']; ?></span>
-                                <img style="width: 50px;height: 50px ;"class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                <img style="width: 50px;height: 50px alig;"class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
+                          
+                                
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
@@ -72,6 +63,8 @@ $typeOptions = mysqli_fetch_all($typeOptionsResult, MYSQLI_ASSOC);
                     </ul>
        </div>
     </div>
+    </ul>
+</div>
 <div class="barbox"></div>
     <div class="content">
 
@@ -232,6 +225,25 @@ $typeOptions = mysqli_fetch_all($typeOptionsResult, MYSQLI_ASSOC);
             <p>&copy; 2023 Lucky Phone Number Shop. All rights reserved.</p>
         </footer>
 
+    </div>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="Shop.js"></script>
     <!-- Bootstrap core JavaScript-->

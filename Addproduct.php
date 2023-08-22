@@ -16,7 +16,7 @@ if (isset($_POST['submit'])) {
     $phonenumber = $_POST['phonenumber'];
     $provider = $_POST['Provider'];
     $price = $_POST['price'];
-    $Type=$_POST['TYPES'];
+    $Type = $_POST['TYPES'];
 
     $query = "INSERT INTO product (phonenumber, Provider, Price,TYPES)
             VALUES ('$phonenumber', '$provider', '$price', '$Type')";
@@ -24,7 +24,7 @@ if (isset($_POST['submit'])) {
 
     if ($result) {
         echo "Data inserted successfully!";
-        
+
         header("Location: Addproduct.php");
         exit;
     } else {
@@ -45,7 +45,8 @@ if (isset($_POST['delete'])) {
         } else {
             echo "Error deleting products: " . mysqli_error($conn);
         }
-    }mysqli_close($conn);
+    }
+    mysqli_close($conn);
     header("Location: Addprodu.php");
     exit;
 
@@ -62,7 +63,8 @@ if (isset($_POST['delete2'])) {
         } else {
             echo "Error deleting products: " . mysqli_error($conn);
         }
-    }mysqli_close($conn);
+    }
+    mysqli_close($conn);
     header("Location: Addprodu.php");
     exit;
 
@@ -137,7 +139,7 @@ date_default_timezone_set('Asia/Bangkok');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
     $uploadDir = 'fileupload/';
-    
+
     $uploadedFileTmp = $_FILES['uploaded_picture']['tmp_name'];
     $originalFileName = $_FILES['uploaded_picture']['name']; // Get the original filename
 
@@ -150,13 +152,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
 
     if (move_uploaded_file($uploadedFileTmp, $uploadDir . $newFileName)) {
         $query = "INSERT INTO uploadfile (fileupload) VALUES ('$newFileName')";
-        
+
         if ($conn->query($query) === TRUE) {
             echo "Picture uploaded successfully!";
         } else {
             echo "Error uploading picture: " . $conn->error;
         }
-    }mysqli_close($conn);
+    }
+    mysqli_close($conn);
     header("Location: Addproduct.php");
     exit;
 }
@@ -175,9 +178,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-<link rel="icon" href="unnamed.png">
+    <link rel="icon" href="unnamed.png">
     <title>Product&Users Management</title>
-   
+
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -501,7 +504,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['fname']; ?></span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    <?php echo $_SESSION['fname']; ?>
+                                </span>
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -544,65 +549,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
 
                     <!-- Content Row -->
                     <div class="row">
-    <!-- Earnings (Monthly) Card Example -->
+                        <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                               <h2 style="font-weight: bold;">แก้ใขBanner</h2></div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">   <div class="row">
-        <div class="col-md-12">
-            <form action="delete_selected.php" method="POST">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Picture</th>
-                            <th>Select</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        require_once "connection.php";
+                                                <h2 style="font-weight: bold;">แก้ใขBanner</h2>
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form action="delete_selected.php" method="POST">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Picture</th>
+                                                                        <th>Select</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <?php
+                                                                    require_once "connection.php";
 
-                        $query = "SELECT * FROM uploadfile";
-                        $result = $conn->query($query);
+                                                                    $query = "SELECT * FROM uploadfile";
+                                                                    $result = $conn->query($query);
 
-                        while ($row = $result->fetch_assoc()) {
-                            echo '<tr>';
-                            echo '<td><img src="fileupload/' . $row['fileupload'] . '?' . time() . '" class="img-thumbnail"></td>';
-                            echo '<td><input type="checkbox" name="selected_files[]" value="' . $row['fileupload'] . '"></td>';
-                            echo '</tr>';
-                        }
-                        ?>
-                    </tbody>
-                </table>
-                <button type="submit" class="btn btn-danger" onclick="return confirmDelete()">Delete Selected</button>
-            </form>
-        </div>
-    </div>
+                                                                    while ($row = $result->fetch_assoc()) {
+                                                                        echo '<tr>';
+                                                                        echo '<td><img src="fileupload/' . $row['fileupload'] . '?' . time() . '" class="img-thumbnail"></td>';
+                                                                        echo '<td><input type="checkbox" name="selected_files[]" value="' . $row['fileupload'] . '"></td>';
+                                                                        echo '</tr>';
+                                                                    }
+                                                                    ?>
+                                                                </tbody>
+                                                            </table>
+                                                            <button type="submit" class="btn btn-danger"
+                                                                onclick="return confirmDelete()">Delete
+                                                                Selected</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <form action="Addproduct.php" method="POST" enctype="multipart/form-data">
-                <input type="file" name="uploaded_picture">
-                <button type="submit" name="upload_btn" class="btn btn-primary">Upload Picture</button>
-            </form>
-        </div>
-    </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form action="Addproduct.php" method="POST"
+                                                            enctype="multipart/form-data">
+                                                            <input type="file" name="uploaded_picture">
+                                                            <button type="submit" name="upload_btn"
+                                                                class="btn btn-primary">Upload Picture</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
 
-    <!-- Include your scripts and other content here -->
-    <script>
-    function confirmDelete() {
-        var selectedCheckboxes = document.querySelectorAll('input[name="selected_files[]"]:checked');
-        if (selectedCheckboxes.length === 0) {
-            alert("Please select at least one picture to delete.");
-            return false;
-        }
-        return confirm("Are you sure you want to delete the selected pictures?");
-    }
-    </script></div>
+                                                <!-- Include your scripts and other content here -->
+                                                <script>
+                                                    function confirmDelete() {
+                                                        var selectedCheckboxes = document.querySelectorAll('input[name="selected_files[]"]:checked');
+                                                        if (selectedCheckboxes.length === 0) {
+                                                            alert("Please select at least one picture to delete.");
+                                                            return false;
+                                                        }
+                                                        return confirm("Are you sure you want to delete the selected pictures?");
+                                                    }
+                                                </script>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-"></i>
@@ -627,32 +639,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
                                                         name="phonenumber" placeholder="กรอกเบอร์โทร" required>
                                                     <br>
                                                     <label for="Provider">ผู้ให้บริการ</label>
-                                                    <select class="custom-select custom-select-sm form-control form-control-sm" id="Provider" name="Provider" required>
+                                                    <select
+                                                        class="custom-select custom-select-sm form-control form-control-sm"
+                                                        id="Provider" name="Provider" required>
                                                         <?php foreach ($providerOptions as $providerOption): ?>
-                                                            <option value="<?php echo $providerOption['option_value']; ?>"><?php echo $providerOption['option_value']; ?></option>
+                                                            <option value="<?php echo $providerOption['option_value']; ?>">
+                                                                <?php echo $providerOption['option_value']; ?></option>
                                                         <?php endforeach; ?>
                                                     </select>
-                                                    <a href="#" class="fa fa-plus-circle" data-toggle="modal" data-target="#addProviderModal"></a>
+                                                    <a href="#" class="fa fa-plus-circle" data-toggle="modal"
+                                                        data-target="#addProviderModal"></a>
 
-                                                    <a href="#" class="fa fa-minus-circle" onclick="deleteSelectedOption('providers')"></a>
+                                                    <a href="#" class="fa fa-minus-circle"
+                                                        onclick="deleteSelectedOption('providers')"></a>
 
 
-                                                      <br>
-                                                    <label for="TYPES">ประเภท  </label>
-                                                    <select class="custom-select custom-select-sm form-control form-control-sm" id="TYPES" name="TYPES" required>
+                                                    <br>
+                                                    <label for="TYPES">ประเภท </label>
+                                                    <select
+                                                        class="custom-select custom-select-sm form-control form-control-sm"
+                                                        id="TYPES" name="TYPES" required>
                                                         <?php foreach ($typeOptions as $typeOption): ?>
                                                             <option value="<?php echo $typeOption['option_value']; ?>"><?php echo $typeOption['option_value']; ?></option>
                                                         <?php endforeach; ?>
                                                     </select>
                                                     <br>
-                                                    <a href="#" class="fa fa-plus-circle" data-toggle="modal" data-target="#addTypeModal"></a>
+                                                    <a href="#" class="fa fa-plus-circle" data-toggle="modal"
+                                                        data-target="#addTypeModal"></a>
 
-                                                    <a href="#" class="fa fa-minus-circle" onclick="deleteSelectedOptionT('types')"></a>
+                                                    <a href="#" class="fa fa-minus-circle"
+                                                        onclick="deleteSelectedOptionT('types')"></a>
 
                                                     <br>
                                                     <label for="price">ราคา</label>
-                                                    <input type="text" class="form-control bg-light border-0 small" name="price" placeholder="กรอกราคา" required>
-                                                    <button class="btn btn-success mt-2" type="submit" name="submit">ยืนยัน</button>
+                                                    <input type="text" class="form-control bg-light border-0 small"
+                                                        name="price" placeholder="กรอกราคา" required>
+                                                    <button class="btn btn-success mt-2" type="submit"
+                                                        name="submit">ยืนยัน</button>
                                                 </form>
                                             </div>
 
@@ -664,128 +687,149 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade" id="addProviderModal" tabindex="-1" role="dialog" aria-labelledby="addProviderModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addProviderModalLabel">Add Provider Option</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <label for="newProviderOption">New Option:</label>
-                    <input type="text" class="form-control" id="newProviderOption" name="newProviderOption" required>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="addNewOption('newProviderOption', 'providers', 'providers')">Add Option</button>
-            </div>
-        </div>
-    </div>
-</div>
+                        <div class="modal fade" id="addProviderModal" tabindex="-1" role="dialog"
+                            aria-labelledby="addProviderModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addProviderModalLabel">Add Provider Option</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <label for="newProviderOption">New Option:</label>
+                                            <input type="text" class="form-control" id="newProviderOption"
+                                                name="newProviderOption" required>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="addNewOption('newProviderOption', 'providers', 'providers')">Add
+                                            Option</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        <div class="modal fade" id="addTypeModal" tabindex="-1" role="dialog" aria-labelledby="addTypeModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addTypeModalLabel">Add Type Option</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <label for="newTypeOption">New Option:</label>
-                    <input type="text" class="form-control" id="newTypeOption" name="newTypeOption" required>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="addNewOption('newTypeOption', 'types')">Add Option</button>
-            </div>
-        </div>
-    </div>
-</div>
+                        <div class="modal fade" id="addTypeModal" tabindex="-1" role="dialog"
+                            aria-labelledby="addTypeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addTypeModalLabel">Add Type Option</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <label for="newTypeOption">New Option:</label>
+                                            <input type="text" class="form-control" id="newTypeOption"
+                                                name="newTypeOption" required>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="addNewOption('newTypeOption', 'types')">Add Option</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
                         <div style="min-width: fit-content;" class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-warning shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                        <h2>ลบสินค้า</h2>
-                    </div>
-                
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                    <!-- Display search form -->
-                                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                                    <label for="search_term">ค้นหาด้วยหมายเลขโทรศัพท์หรือราคา</label>
-                                    <input type="text" class="form-control bg-light border-0 small" name="search_term" placeholder="ค้นหาเบอร์หรือราคา" required>
-                                    <button class="btn btn-success mt-2" type="submit" name="searchnumber">ค้นหา</button>
-                                </form>
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                <h2>ลบสินค้า</h2>
+                                            </div>
 
-                               
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <!-- Display search form -->
+                                                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                                                    <label for="search_term">ค้นหาด้วยหมายเลขโทรศัพท์หรือราคา</label>
+                                                    <input type="text" class="form-control bg-light border-0 small"
+                                                        name="search_term" placeholder="ค้นหาเบอร์หรือราคา" required>
+                                                    <button class="btn btn-success mt-2" type="submit"
+                                                        name="searchnumber">ค้นหา</button>
+                                                </form>
 
-                          
 
-                            
-                             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                            <div class="table-responsive">
-                                 <!-- Display search results -->
-                                 <?php if (isset($searchnumResult)) : ?>
-                                    <?php if (mysqli_num_rows($searchnumResult) > 0) : ?>
-                                        <h2>ผลการค้นหา</h2>
-                                        <table class="table table-bordered dataTable">
-                                            <thead>
-                                            <tr>
-                                                <th>เลือก</th>
-                                                <th>เบอร์</th>
-                                                <th>ผู้ให้บริการ</th>
-                                                <th>ราคา</th>
-                                                <th>เสริมด้าน</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php while ($row = mysqli_fetch_assoc($searchnumResult)) : ?>
-                                                    <tr>
-                                                    <td><input type="checkbox" name="selected_products[]" value="<?php echo $row['id']; ?>">
-                                                            </td>
-                                                    <td><?php echo $row['phonenumber']; ?></td>
-                                                    <td><?php echo $row['Provider']; ?></td>
-                                                    <td><?php echo $row['Price']; ?></td>
-                                                    <td><?php echo $row['TYPES']; ?></td>
-                                                </tr>
-                                                <?php endwhile; ?>
-                                            </tbody>
-                                        </table>
-                                        <button class="btn btn-danger mt-2" type="submit" name="delete2">
-                                            ลบสินค้าที่เลือก
-                                        </button>
-                                    <?php else : ?>
-                                        <p>ไม่พบผลการค้นหา</p>
-                                    <?php endif; ?>
-                                <?php endif; ?>
-                                
+
+
+
+
+                                                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                                                    <div class="table-responsive">
+                                                        <!-- Display search results -->
+                                                        <?php if (isset($searchnumResult)): ?>
+                                                            <?php if (mysqli_num_rows($searchnumResult) > 0): ?>
+                                                                <h2>ผลการค้นหา</h2>
+                                                                <table class="table table-bordered dataTable">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>เลือก</th>
+                                                                            <th>เบอร์</th>
+                                                                            <th>ผู้ให้บริการ</th>
+                                                                            <th>ราคา</th>
+                                                                            <th>เสริมด้าน</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php while ($row = mysqli_fetch_assoc($searchnumResult)): ?>
+                                                                            <tr>
+                                                                                <td><input type="checkbox"
+                                                                                        name="selected_products[]"
+                                                                                        value="<?php echo $row['id']; ?>">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <?php echo $row['phonenumber']; ?>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <?php echo $row['Provider']; ?>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <?php echo $row['Price']; ?>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <?php echo $row['TYPES']; ?>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php endwhile; ?>
+                                                                    </tbody>
+                                                                </table>
+                                                                <button class="btn btn-danger mt-2" type="submit"
+                                                                    name="delete2">
+                                                                    ลบสินค้าที่เลือก
+                                                                </button>
+                                                            <?php else: ?>
+                                                                <p>ไม่พบผลการค้นหา</p>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-table fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                           
-                        </form>
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-table fa-2x text-gray-300"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                        </div>
                         <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4" style="min-width: fit-content;">
-                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
@@ -796,19 +840,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
                                                 <!-- Search users by name or ID -->
                                                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                                                     <h3>
-                                                        
+
                                                         <div class="usamount">จำนวนผู้ใช้ในระบบ:
                                                             <?php echo $totalUsers; ?>
                                                         </div>
                                                     </h3>
 
                                                     <label for="search_term">ค้นหาด้วยชื่อหรือรหัสผู้ใช้</label>
-                                                    
-                                                     <input type="text" class="form-control bg-light border-0 small" name="search_term" placeholder="กรอกชื่อหรือรหัสผู้ใช้" required>
-                                                    <button class="btn btn-success mt-2" type="submit" name="search">ค้นหา</button>
+
+                                                    <input type="text" class="form-control bg-light border-0 small"
+                                                        name="search_term" placeholder="กรอกชื่อหรือรหัสผู้ใช้"
+                                                        required>
+                                                    <button class="btn btn-success mt-2" type="submit"
+                                                        name="search">ค้นหา</button>
 
                                                 </form>
-                                               
+
 
                                                 <!-- Display searched users -->
                                                 <?php if (isset($_POST['search'])): ?>
@@ -825,7 +872,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
                                                                         <th>นามสกุล</th>
                                                                         <th>สถานะ</th>
                                                                         <th>ชื่อผู้ใช้</th>
-                                                                        
+
                                                                         <!-- Add more columns if needed... -->
                                                                     </tr>
                                                                 </thead>
@@ -849,20 +896,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
                                                                             <td>
                                                                                 <?php echo $row['username']; ?>
                                                                             </td>
-                                                                            
+
 
                                                                             <!-- Add more columns if needed... -->
                                                                         </tr>
                                                                     <?php endwhile; ?>
                                                                 </tbody>
                                                             </table>
-                                                            <button class="btn btn-danger  mt-2" type="submit" name="delete_users">
+                                                            <button class="btn btn-danger  mt-2" type="submit"
+                                                                name="delete_users">
                                                                 ลบผู้ใช้ที่เลือก
                                                             </button>
-                                                            
+
 
                                                         </form>
-                                                        
+
                                                     <?php else: ?>
                                                         <div class="red">ไม่พบผู้ใช้ที่ค้นหา</div>
                                                     <?php endif; ?>
@@ -870,7 +918,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                        <div class="col-auto">
+                                            <div class="col-auto">
                                                 <i class="fas fa-search fa-2x text-gray-300"></i>
                                             </div>
                                         </div>
@@ -927,303 +975,306 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_btn'])) {
                         </div>-->
 
                         <!-- Pending Requests Card Example -->
-               
 
 
-                    <!-- Content Row -->
 
-                    <div class="row">
+                        <!-- Content Row -->
 
-                        <!-- Area Chart -->
-                        <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
+                        <div class="row">
+
+                            <!-- Area Chart -->
+                            <div class="col-xl-8 col-lg-7">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                                        <div class="dropdown no-arrow">
+                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                aria-labelledby="dropdownMenuLink">
+                                                <div class="dropdown-header">Dropdown Header:</div>
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="myAreaChart"></canvas>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
+                            </div>
+
+                            <!-- Pie Chart -->
+                            <div class="col-xl-4 col-lg-5">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                                        <div class="dropdown no-arrow">
+                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                aria-labelledby="dropdownMenuLink">
+                                                <div class="dropdown-header">Dropdown Header:</div>
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="chart-pie pt-4 pb-2">
+                                            <canvas id="myPieChart"></canvas>
+                                        </div>
+                                        <div class="mt-4 text-center small">
+                                            <span class="mr-2">
+                                                <i class="fas fa-circle text-primary"></i> Direct
+                                            </span>
+                                            <span class="mr-2">
+                                                <i class="fas fa-circle text-success"></i> Social
+                                            </span>
+                                            <span class="mr-2">
+                                                <i class="fas fa-circle text-info"></i> Referral
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
+                        <!-- Content Row -->
+                        <div class="row">
+
+                            <!-- Content Column -->
+                            <div class="col-lg-6 mb-4">
+
+                                <!-- Project Card Example -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <h4 class="small font-weight-bold">Server Migration <span
+                                                class="float-right">20%</span></h4>
+                                        <div class="progress mb-4">
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
+                                                aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <h4 class="small font-weight-bold">Sales Tracking <span
+                                                class="float-right">40%</span></h4>
+                                        <div class="progress mb-4">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
+                                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <h4 class="small font-weight-bold">Customer Database <span
+                                                class="float-right">60%</span></h4>
+                                        <div class="progress mb-4">
+                                            <div class="progress-bar" role="progressbar" style="width: 60%"
+                                                aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <h4 class="small font-weight-bold">Payout Details <span
+                                                class="float-right">80%</span></h4>
+                                        <div class="progress mb-4">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
+                                                aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <h4 class="small font-weight-bold">Account Setup <span
+                                                class="float-right">Complete!</span></h4>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                                                aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
+
+                                <!-- Color System -->
+                                <div class="row">
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card bg-primary text-white shadow">
+                                            <div class="card-body">
+                                                Primary
+                                                <div class="text-white-50 small">#4e73df</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
-                                        </span>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card bg-success text-white shadow">
+                                            <div class="card-body">
+                                                Success
+                                                <div class="text-white-50 small">#1cc88a</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card bg-info text-white shadow">
+                                            <div class="card-body">
+                                                Info
+                                                <div class="text-white-50 small">#36b9cc</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card bg-warning text-white shadow">
+                                            <div class="card-body">
+                                                Warning
+                                                <div class="text-white-50 small">#f6c23e</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card bg-danger text-white shadow">
+                                            <div class="card-body">
+                                                Danger
+                                                <div class="text-white-50 small">#e74a3b</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card bg-secondary text-white shadow">
+                                            <div class="card-body">
+                                                Secondary
+                                                <div class="text-white-50 small">#858796</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card bg-light text-black shadow">
+                                            <div class="card-body">
+                                                Light
+                                                <div class="text-black-50 small">#f8f9fc</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card bg-dark text-white shadow">
+                                            <div class="card-body">
+                                                Dark
+                                                <div class="text-white-50 small">#5a5c69</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
+                            </div>
+
+                            <div class="col-lg-6 mb-4">
+
+                                <!-- Illustrations -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                                                src="img/undraw_posting_photo.svg" alt="...">
+                                        </div>
+                                        <p>Add some quality, svg illustrations to your project courtesy of <a
+                                                target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
+                                            constantly updated collection of beautiful svg images that you can use
+                                            completely free and without attribution!</p>
+                                        <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations
+                                            on
+                                            unDraw &rarr;</a>
+                                    </div>
+                                </div>
+
+                                <!-- Approach -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to
+                                            reduce
+                                            CSS bloat and poor page performance. Custom CSS classes are used to create
+                                            custom components and custom utility classes.</p>
+                                        <p class="mb-0">Before working with this theme, you should become familiar with
+                                            the
+                                            Bootstrap framework, especially the utility classes.</p>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+
                     </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
-
-                        <!-- Content Column -->
-                        <div class="col-lg-6 mb-4">
-
-                            <!-- Project Card Example -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
-                                </div>
-                                <div class="card-body">
-                                    <h4 class="small font-weight-bold">Server Migration <span
-                                            class="float-right">20%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
-                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Sales Tracking <span
-                                            class="float-right">40%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
-                                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Customer Database <span
-                                            class="float-right">60%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar" role="progressbar" style="width: 60%"
-                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Payout Details <span
-                                            class="float-right">80%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Account Setup <span
-                                            class="float-right">Complete!</span></h4>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
-                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Color System -->
-                            <div class="row">
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-primary text-white shadow">
-                                        <div class="card-body">
-                                            Primary
-                                            <div class="text-white-50 small">#4e73df</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-success text-white shadow">
-                                        <div class="card-body">
-                                            Success
-                                            <div class="text-white-50 small">#1cc88a</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-info text-white shadow">
-                                        <div class="card-body">
-                                            Info
-                                            <div class="text-white-50 small">#36b9cc</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-warning text-white shadow">
-                                        <div class="card-body">
-                                            Warning
-                                            <div class="text-white-50 small">#f6c23e</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-danger text-white shadow">
-                                        <div class="card-body">
-                                            Danger
-                                            <div class="text-white-50 small">#e74a3b</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-secondary text-white shadow">
-                                        <div class="card-body">
-                                            Secondary
-                                            <div class="text-white-50 small">#858796</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-light text-black shadow">
-                                        <div class="card-body">
-                                            Light
-                                            <div class="text-black-50 small">#f8f9fc</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-dark text-white shadow">
-                                        <div class="card-body">
-                                            Dark
-                                            <div class="text-white-50 small">#5a5c69</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-lg-6 mb-4">
-
-                            <!-- Illustrations -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="text-center">
-                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                            src="img/undraw_posting_photo.svg" alt="...">
-                                    </div>
-                                    <p>Add some quality, svg illustrations to your project courtesy of <a
-                                            target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                        constantly updated collection of beautiful svg images that you can use
-                                        completely free and without attribution!</p>
-                                    <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
-                                        unDraw &rarr;</a>
-                                </div>
-                            </div>
-
-                            <!-- Approach -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce
-                                        CSS bloat and poor page performance. Custom CSS classes are used to create
-                                        custom components and custom utility classes.</p>
-                                    <p class="mb-0">Before working with this theme, you should become familiar with the
-                                        Bootstrap framework, especially the utility classes.</p>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
+                    <!-- /.container-fluid -->
 
                 </div>
-                <!-- /.container-fluid -->
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Copyright &copy; Your Website 2021</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End of Footer -->
 
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
+            <!-- End of Content Wrapper -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Page Wrapper -->
 
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Logout</a>
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="logout.php">Logout</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="aaw.js"></script>
-   <!-- Bootstrap core JavaScript-->
-   <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="aaw.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+        <!-- Page level plugins -->
+        <script src="vendor/chart.js/Chart.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+        <!-- Page level custom scripts -->
+        <script src="js/demo/chart-area-demo.js"></script>
+        <script src="js/demo/chart-pie-demo.js"></script>
 
 </body>
 
