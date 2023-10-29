@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selected_files'])) {
         }
     }
     
-    header("Location: Addproduct.php"); // Redirect back to the page after deletion
+    header("Location: banner.php"); // Redirect back to the page after deletion
     exit();
 }
 ?>
